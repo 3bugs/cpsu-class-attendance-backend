@@ -5,6 +5,13 @@ import {ClassItem} from "./classes/class-item";
 
 export const students: Student[] = [
   {
+    studentId: '123456789',
+    title: 'นาย',
+    firstName: 'พร้อมเลิศ',
+    lastName: 'หล่อวิจิตร',
+    major: 'COMPUTER SCIENCE',
+  },
+  {
     studentId: '620710036',
     title: 'นางสาว',
     firstName: 'อภิญญา',

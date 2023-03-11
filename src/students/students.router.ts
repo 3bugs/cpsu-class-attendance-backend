@@ -4,6 +4,7 @@
 import express, {Request, Response} from 'express';
 import * as StudentService from './students.service';
 import {Student} from './student';
+import {ResponseBody} from "../common/response-body";
 
 /**
  * Router Definition
@@ -18,7 +19,14 @@ studentsRouter.get('/', async (req: Request, res: Response) => {
   try {
     const students: Student[] = StudentService.findAll();
 
-    res.status(200).send(students);
+    const body: ResponseBody = {
+      status: 'ok',
+      message: null,
+      data: students,
+    };
+
+    res.status(200).send(body);
+
   } catch (e: any) {
     res.status(500).send(e.message);
   }
@@ -32,11 +40,18 @@ studentsRouter.get('/:id', async (req: Request, res: Response) => {
   try {
     const student = StudentService.find(id);
 
-    if (student) {
-      return res.status(200).send(student);
-    }
+    const body: ResponseBody = student ? {
+      status: 'ok',
+      message: null,
+      data: student,
+    } : {
+      status: 'error',
+      message: `Student ID '${id}' not found`,
+      data: null,
+    };
 
-    res.status(404).send(`Student ID '${id}' not found`);
+    return res.status(200).send(body);
+
   } catch (e: any) {
     res.status(500).send(e.message);
   }
@@ -50,11 +65,18 @@ studentsRouter.get('/:id/login', (req: Request, res: Response) => {
   try {
     const student = StudentService.login(id, password);
 
-    if (student) {
-      return res.status(200).send(student);
-    }
+    const body: ResponseBody = student ? {
+      status: 'ok',
+      message: null,
+      data: student,
+    } : {
+      status: 'error',
+      message: `Invalid student ID or password`,
+      data: null,
+    };
 
-    res.status(404).send(`Invalid student ID or password`);
+    return res.status(200).send(body);
+
   } catch (e: any) {
     res.status(500).send(e.message);
   }

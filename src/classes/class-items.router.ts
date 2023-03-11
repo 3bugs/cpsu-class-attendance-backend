@@ -4,6 +4,7 @@
 import express, {Request, Response} from 'express';
 import * as ClassesService from './class-items.service';
 import {ClassItem} from './class-item';
+import {ResponseBody} from "../common/response-body";
 
 /**
  * Router Definition
@@ -18,7 +19,13 @@ classesRouter.get('/', async (req: Request, res: Response) => {
   try {
     const classItems: ClassItem[] = ClassesService.findAll();
 
-    res.status(200).send(classItems);
+    const body: ResponseBody = {
+      status: 'ok',
+      message: null,
+      data: classItems,
+    };
+
+    res.status(200).send(body);
   } catch (e: any) {
     res.status(500).send(e.message);
   }
@@ -32,11 +39,18 @@ classesRouter.get('/:id', async (req: Request, res: Response) => {
   try {
     const classItem = ClassesService.find(id);
 
-    if (classItem) {
-      return res.status(200).send(classItem);
-    }
+    const body: ResponseBody = classItem ? {
+      status: 'ok',
+      message: null,
+      data: classItem,
+    } : {
+      status: 'error',
+      message: `Class ID '${id}' not found`,
+      data: null,
+    };
 
-    res.status(404).send(`Class ID '${id}' not found`);
+    return res.status(200).send(body);
+
   } catch (e: any) {
     res.status(500).send(e.message);
   }
@@ -48,9 +62,16 @@ classesRouter.post('/:id/attend', (req: Request, res: Response) => {
   const studentId = req.body.studentId as string;
 
   try {
-    ClassesService.attend(classId, studentId);
+    const success = ClassesService.attend(classId, studentId);
 
-    return res.status(201).send();
+    const body: ResponseBody = {
+      status: success ? 'ok' : 'error',
+      message: null,
+      data: success,
+    };
+
+    return res.status(201).send(body);
+
   } catch (e: any) {
     res.status(500).send(e.message);
   }

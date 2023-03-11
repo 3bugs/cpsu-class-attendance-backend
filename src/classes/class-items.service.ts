@@ -12,5 +12,8 @@ export const attend = (classId: number, studentId: string) => {
   if (classToAttend) {
     console.log(studentId);
     classToAttend.attendingStudents.push(studentId);
+    return true;
   }
+
+  return false;
 };
