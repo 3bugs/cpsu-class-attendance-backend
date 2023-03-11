@@ -1,4 +1,4 @@
-import {classItems, students} from '../storage';
+import {classItems} from '../storage';
 
 export const findAll = () => classItems;
 

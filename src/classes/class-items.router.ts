@@ -3,9 +3,7 @@
  */
 import express, {Request, Response} from 'express';
 import * as ClassesService from './class-items.service';
-import {ClassItem} from "./class-item";
-import * as StudentService from "../students/students.service";
-import {studentsRouter} from "../students/students.router";
+import {ClassItem} from './class-item';
 
 /**
  * Router Definition
